@@ -1,1 +1,40 @@
-<h1>Hello world</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css" />
+    <title>ShareWallet</title>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="header-container">
+            <h2 id="app-name-header">ShareWallet</h2>
+        </div>
+        <div class="billing-groups-container">
+            <ul id="billing-groups-list">
+                <% if (locals.billingGroups) { %>
+                    <% billingGroups.forEach(billingGroup=> { %>
+                        <li>
+                            <a href="/billingGroup/<%=billingGroup.id%>">
+                                <h3>
+                                    <%= billingGroup.title %>
+                                </h3>
+                                <p>
+                                    <%= billingGroup.description %>
+                                </p>
+                            </a>
+                        </li>
+                        <hr id="line-under-list-item" />
+                        <% }); %>
+                            <% } else { %>
+                                <p>There is no data</p>
+                                <% } %>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

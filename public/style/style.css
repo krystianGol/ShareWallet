@@ -1,0 +1,64 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #a59dde;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.app-container {
+    height: 650px;
+    width: 750px;
+    margin-top: 50px;
+    background-color: #28263b;
+    border-radius: 14px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.header-container {
+    height: auto;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    background-color: #3d3b4c;
+}
+
+#app-name-header {
+    color: aliceblue;
+    font-size: 35px;
+    margin: 0px;
+}
+
+.billng-groups-container {
+    margin-top: 0;
+    overflow-y: auto;
+}
+
+#billing-groups-list {
+    list-style-type: none;
+    background-color: #4d494a;
+    color: aliceblue;
+    padding: 0;
+}
+
+li {
+    padding-top: 1px;
+    padding-left: 20px;
+}
+
+#line-under-list-item {
+    width: 100%;
+    border: 1px solid #7d7576;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

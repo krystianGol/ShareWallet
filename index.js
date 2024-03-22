@@ -20,15 +20,27 @@ db.connect();
 
 db.query("SELECT * FROM users", (err, res) => {
     if (err) {
-      console.error("Error executing query", err.stack);
+        console.error("Error executing query", err.stack);
     } else {
-      users = res.rows;
+        users = res.rows;
     }
-  });
+});
 
-app.get("/", (req, res) => {
-    console.log(users);
-    res.render("index.ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+app.get("/", async (req, res) => {
+    const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
+    const billingGroups = result.rows;
+    console.log(billingGroups);
+    res.render("index.ejs",
+        {
+            billingGroups: billingGroups
+        });
+});
+
+app.get("/billingGroup/:id", (req, res) => {
+    res.render("billingGroup.ejs");
 });
 
 app.listen(port, () => {
