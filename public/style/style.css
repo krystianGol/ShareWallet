@@ -76,3 +76,24 @@ a {
 #item-price {
     order: 2;
 }
+
+.expenses-balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#expenses {
+    width: 50%;
+    text-align: center;
+}
+
+#balance {
+    width: 100%;
+    text-align: center;
+}
+
+#balance-link {
+    width: 50%;
+
+}

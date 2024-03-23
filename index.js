@@ -68,8 +68,13 @@ app.get("/billingGroup/:id", async (req, res) => {
         {
             title: title,
             users: updatedAllUsers,
-            items: itemsData
+            items: itemsData,
+            billingGroupId: billingGroupId
         });
+});
+
+app.get("/balance/:id", async (res, req) => {
+    res.render("balance.ejs");
 });
 
 app.listen(port, () => {
