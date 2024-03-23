@@ -41,24 +41,28 @@ app.get("/", async (req, res) => {
 
 app.get("/billingGroup/:id", async (req, res) => {
     const billingGroupId = req.params.id;
+    let updatedAllUsers = "";
 
     const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
 
-    const usersResult = await db.query("SELECT users.name FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
+    const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
     const itemsData = itemsResult.rows;
-    console.log(itemsData);
-    const title = itemsData[0].title;
 
     const usersData = usersResult.rows;
-    const users = usersData;
+    const title = usersData[0].title;
 
-    let allUsers = "";
-    users.forEach(user => {
-        allUsers += user.name + ", ";
-    });
+    if (usersData.length > 0) {
+        const users = usersData;
 
-    let updatedAllUsers = allUsers.slice(0, -2);
+        let allUsers = "";
+        users.forEach(user => {
+            allUsers += user.name + ", ";
+        });
+
+        updatedAllUsers = allUsers.slice(0, -2);
+
+    }
 
     res.render("billingGroup.ejs",
         {
