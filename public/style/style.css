@@ -83,17 +83,26 @@ a {
     align-items: center;
 }
 
-#expenses {
+#expenses-not-as-link {
     width: 50%;
     text-align: center;
 }
 
-#balance {
+#balance-as-link {
     width: 100%;
     text-align: center;
 }
 
-#balance-link {
+#link {
     width: 50%;
+}
 
+#expenses-as-link {
+    width: 100%;
+    text-align: center;
+}
+
+#balance-not-as-link {
+    width: 50%;
+    text-align: center;
 }

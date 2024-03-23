@@ -73,8 +73,56 @@ app.get("/billingGroup/:id", async (req, res) => {
         });
 });
 
-app.get("/balance/:id", async (res, req) => {
-    res.render("balance.ejs");
+app.get("/balance/:id", async (req, res) => {
+    const billingGroupId = req.params.id;
+    let updatedAllUsers = "";
+    let allCosts = 0;
+    let costForUser = [];
+
+    const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
+
+    const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
+
+    const itemsData = itemsResult.rows;
+    const usersData = usersResult.rows;
+    const title = usersData[0].title;
+
+
+    if (usersData.length > 0) {
+        const users = usersData;
+
+        let allUsers = "";
+        users.forEach(user => {
+            allUsers += user.name + ", ";
+            costForUser.push({
+                name: user.name,
+                costs: 0
+            })
+        });
+
+        updatedAllUsers = allUsers.slice(0, -2);
+    }
+
+    if (itemsData.length > 0) {
+        itemsData.forEach(item => {
+            allCosts += item.price;
+            let user = costForUser.find(user => user.name == item.name);
+            if (user) {
+                user.costs += item.price;
+            }
+        });
+    }
+
+    allCosts = allCosts.toFixed(2);
+    console.log(costForUser);
+    console.log(allCosts);
+
+    res.render("balance.ejs",
+        {
+            title: title,
+            users: updatedAllUsers,
+            billingGroupId: billingGroupId
+        });
 });
 
 app.listen(port, () => {
