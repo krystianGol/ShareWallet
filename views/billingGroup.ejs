@@ -1,1 +1,50 @@
-<h1>hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css" />
+    <title>ShareWallet</title>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="header-container">
+            <h2 id="app-name-header">
+                <%= title %>
+            </h2>
+            <p>
+                <%= users %>
+            </p>
+        </div>
+        <div class="billing-groups-container">
+            <ul id="billing-groups-list">
+                <% if (locals.items) { %>
+                    <% items.forEach(item=> { %>
+                        <li>
+                            <a href="/item/<%=item.id%>">
+                                <div class="iteam-header-price-container">
+                                    <h3 id="item-description">
+                                        <%=item.description%>
+                                    </h3>
+                                    <h3 id="item-price">
+                                        <%=item.price%> zł
+                                    </h3>
+                                </div>
+                                <p>
+                                    Paid by <%=item.name%>
+                                </p>
+                            </a>
+                        </li>
+                        <hr id="line-under-list-item" />
+                        <% }); %>
+                            <% } else { %>
+                                <p>There is no items</p>
+                                <% } %>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
