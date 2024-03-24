@@ -63,6 +63,25 @@ function calculateCosts(users) {
     return users;
 }
 
+function calculateAllCosts(items) {
+    let allCosts = 0;
+    items.forEach(item => {
+        allCosts += item.price;
+    });
+    allCosts = allCosts.toFixed(2);
+    return allCosts;
+}
+
+function calculateExpensesForEachUser(items, users) {
+    items.forEach(item => {
+        let user = users.find(user => user.name == item.name);
+        if (user) {
+            user.costs += item.price;
+        }
+    });
+    return users;
+}
+
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
     const billingGroups = result.rows;
@@ -76,6 +95,7 @@ app.get("/", async (req, res) => {
 app.get("/expenses/:id", async (req, res) => {
     const billingGroupId = req.params.id;
     let updatedAllUsers = "";
+    let allUsersString;
 
     const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
 
@@ -88,20 +108,13 @@ app.get("/expenses/:id", async (req, res) => {
 
     if (usersData.length > 0) {
         const users = usersData;
-
-        let allUsers = "";
-        users.forEach(user => {
-            allUsers += user.name + ", ";
-        });
-
-        updatedAllUsers = allUsers.slice(0, -2);
-
+        allUsersString = namedAllUsers(users);
     }
 
     res.render("billingGroup.ejs",
         {
             title: title,
-            users: updatedAllUsers,
+            users: allUsersString,
             items: itemsData,
             billingGroupId: billingGroupId
         });
@@ -127,24 +140,13 @@ app.get("/balance/:id", async (req, res) => {
         allUsersString = namedAllUsers(users);
 
         costForUser = initializeCostForEveryUser(users);
-
-        console.log("COST", costForUser);
-        console.log("USER", allUsersString);
     }
 
     if (itemsData.length > 0) {
-        itemsData.forEach(item => {
-            allCosts += item.price;
-            let user = costForUser.find(user => user.name == item.name);
-            if (user) {
-                user.costs += item.price;
-            }
-        });
-        allCosts = allCosts.toFixed(2);
+        allCosts = calculateAllCosts(itemsData)
+        costForUser = calculateExpensesForEachUser(itemsData, costForUser);
         costForUser = calculateCosts(costForUser);
     }
-
-
 
     res.render("balance.ejs",
         {
