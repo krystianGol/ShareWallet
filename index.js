@@ -29,6 +29,40 @@ db.query("SELECT * FROM users", (err, res) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+function namedAllUsers(users) {
+    let allUsers = "";
+    users.forEach(user => {
+        allUsers += user.name + ", ";
+    });
+    allUsers = allUsers.slice(0, -2);
+    return allUsers;
+}
+
+function initializeCostForEveryUser(users) {
+    let costForUser = [];
+    users.forEach(user => {
+        costForUser.push({
+            name: user.name,
+            costs: 0
+        })
+    });
+    return costForUser;
+}
+
+function calculateCosts(users) {
+    let usersClone = users.map(user => ({ ...user }));
+    for (let i = 0; i < users.length; i++) {
+        let totalCostOfOthers = 0;
+        for (let j = 0; j < users.length; j++) {
+            if (i !== j) {
+                totalCostOfOthers += usersClone[j].costs;
+            }
+        }
+        users[i].costs -= totalCostOfOthers;
+    }
+    return users;
+}
+
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
     const billingGroups = result.rows;
@@ -39,7 +73,7 @@ app.get("/", async (req, res) => {
         });
 });
 
-app.get("/billingGroup/:id", async (req, res) => {
+app.get("/expenses/:id", async (req, res) => {
     const billingGroupId = req.params.id;
     let updatedAllUsers = "";
 
@@ -75,9 +109,9 @@ app.get("/billingGroup/:id", async (req, res) => {
 
 app.get("/balance/:id", async (req, res) => {
     const billingGroupId = req.params.id;
-    let updatedAllUsers = "";
     let allCosts = 0;
     let costForUser = [];
+    let allUsersString;
 
     const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
@@ -90,17 +124,12 @@ app.get("/balance/:id", async (req, res) => {
 
     if (usersData.length > 0) {
         const users = usersData;
+        allUsersString = namedAllUsers(users);
 
-        let allUsers = "";
-        users.forEach(user => {
-            allUsers += user.name + ", ";
-            costForUser.push({
-                name: user.name,
-                costs: 0
-            })
-        });
+        costForUser = initializeCostForEveryUser(users);
 
-        updatedAllUsers = allUsers.slice(0, -2);
+        console.log("COST", costForUser);
+        console.log("USER", allUsersString);
     }
 
     if (itemsData.length > 0) {
@@ -111,16 +140,16 @@ app.get("/balance/:id", async (req, res) => {
                 user.costs += item.price;
             }
         });
+        allCosts = allCosts.toFixed(2);
+        costForUser = calculateCosts(costForUser);
     }
 
-    allCosts = allCosts.toFixed(2);
-    console.log(costForUser);
-    console.log(allCosts);
+
 
     res.render("balance.ejs",
         {
             title: title,
-            users: updatedAllUsers,
+            users: allUsersString,
             billingGroupId: billingGroupId
         });
 });
