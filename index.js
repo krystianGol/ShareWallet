@@ -16,8 +16,10 @@ const db = new pg.Client({
     port: 5432
 });
 
+// CONNECT TO DATABASE
 db.connect();
 
+// GET ALL USERS
 db.query("SELECT * FROM users", (err, res) => {
     if (err) {
         console.error("Error executing query", err.stack);
@@ -29,6 +31,7 @@ db.query("SELECT * FROM users", (err, res) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// CRATE STRING WITH ALL NAMES SEPARATED WITH ','
 function namedAllUsers(users) {
     let allUsers = "";
     users.forEach(user => {
@@ -38,6 +41,7 @@ function namedAllUsers(users) {
     return allUsers;
 }
 
+// SET 0 COST FOR EVERY USER
 function initializeCostForEveryUser(users) {
     let costForUser = [];
     users.forEach(user => {
@@ -49,6 +53,7 @@ function initializeCostForEveryUser(users) {
     return costForUser;
 }
 
+// CALCULATE COSTS FOR EVERY USER INLUCDING COSTS OF OTHER USERS
 function calculateCosts(users) {
     let usersClone = users.map(user => ({ ...user }));
     for (let i = 0; i < users.length; i++) {
@@ -63,6 +68,7 @@ function calculateCosts(users) {
     return users;
 }
 
+// CALCULATE COST ALL USERS 
 function calculateAllCosts(items) {
     let allCosts = 0;
     items.forEach(item => {
@@ -72,6 +78,7 @@ function calculateAllCosts(items) {
     return allCosts;
 }
 
+// CALCULATES COSTS WITHOUT INCLUDING THE COSTS OF OTHER USERS
 function calculateExpensesForEachUser(items, users) {
     items.forEach(item => {
         let user = users.find(user => user.name == item.name);
