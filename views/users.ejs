@@ -1,1 +1,43 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css" />
+    <title>ShareWallet</title>
+</head>
+
+<body>
+    <div class="users-container">
+        <ul id="users-list">
+            <% if (locals.users) { %>
+                <% users.forEach(user=> { %>
+                    <li id="user-list-item" style="background-color: aquamarine; border-radius: 14px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor"
+                            class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                            <path fill-rule="evenodd"
+                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                        </svg>
+                        <h3>
+                            <%= user.name %>
+                        </h3>
+                    </li>
+                    <% }); %>
+                        <% } else { %>
+                            <p>Error 404</p>
+                            <% } %>
+                                <li id="user-list-item">
+                                    <button id="add-new-user-btn" onclick="window.location.href='/new'"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                                            fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                        </svg></button>
+                                </li>
+        </ul>
+    </div>
+</body>
+
+</html>

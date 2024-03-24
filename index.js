@@ -176,7 +176,10 @@ app.get("/balance/:id", async (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-    res.render("users.ejs");
+    res.render("users.ejs",
+        {
+            users: users
+        });
 });
 
 app.listen(port, () => {
