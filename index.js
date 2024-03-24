@@ -94,11 +94,12 @@ app.get("/", async (req, res) => {
 
 app.get("/expenses/:id", async (req, res) => {
     const billingGroupId = req.params.id;
-    let updatedAllUsers = "";
     let allUsersString;
 
+    // GET DATA ABOUT ITEMS FROM DATABASE
     const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
 
+    // GET DATA ABOUT USERS FROM DATABASE
     const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
     const itemsData = itemsResult.rows;
@@ -111,7 +112,7 @@ app.get("/expenses/:id", async (req, res) => {
         allUsersString = namedAllUsers(users);
     }
 
-    res.render("billingGroup.ejs",
+    res.render("expenses.ejs",
         {
             title: title,
             users: allUsersString,
@@ -122,12 +123,13 @@ app.get("/expenses/:id", async (req, res) => {
 
 app.get("/balance/:id", async (req, res) => {
     const billingGroupId = req.params.id;
-    let allCosts = 0;
     let costForUser = [];
     let allUsersString;
 
+    // GET DATA ABOUT USERS FROM DATABASE
     const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
+    // GET DATA ABOUT ITEMS FROM DATABASE
     const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
 
     const itemsData = itemsResult.rows;
@@ -137,14 +139,21 @@ app.get("/balance/:id", async (req, res) => {
 
     if (usersData.length > 0) {
         const users = usersData;
+        // GET NAMES ABOUT USER FOR SPECIFIC BILLING GROUP
         allUsersString = namedAllUsers(users);
 
+        // SET COST TO 0 FOR EVERY USER
         costForUser = initializeCostForEveryUser(users);
     }
 
     if (itemsData.length > 0) {
+
         allCosts = calculateAllCosts(itemsData)
+
+        // CALCULATES COSTS WITHOUT INCLUDING THE COSTS OF OTHER USERS
         costForUser = calculateExpensesForEachUser(itemsData, costForUser);
+
+        // INCLUDE COSTS OF OTHER USERS
         costForUser = calculateCosts(costForUser);
     }
 
