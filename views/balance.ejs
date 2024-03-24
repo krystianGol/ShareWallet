@@ -39,6 +39,22 @@
                     <h3>BALANCE</h3>
                 </div>
             </div>
+            <ul id="balance-id">
+                <% if (locals.userCost) { %>
+                    <% userCost.forEach(user=> { %>
+                        <li>
+                            <p>
+                                <%=user.name%>
+                            </p>
+                            <p>
+                                <%=user.costs%>
+                            </p>
+                        </li>
+                        <% }) %>
+                            <% } else { %>
+                                <p>There is no expenses</p>
+                                <% } %>
+            </ul>
         </div>
     </div>
 </body>

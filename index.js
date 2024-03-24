@@ -124,6 +124,7 @@ app.get("/expenses/:id", async (req, res) => {
 app.get("/balance/:id", async (req, res) => {
     const billingGroupId = req.params.id;
     let costForUser = [];
+    let allCosts;
     let allUsersString;
 
     // GET DATA ABOUT USERS FROM DATABASE
@@ -161,7 +162,8 @@ app.get("/balance/:id", async (req, res) => {
         {
             title: title,
             users: allUsersString,
-            billingGroupId: billingGroupId
+            billingGroupId: billingGroupId,
+            userCost: costForUser
         });
 });
 
