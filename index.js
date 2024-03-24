@@ -91,8 +91,9 @@ function calculateExpensesForEachUser(items, users) {
 
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
+
     const billingGroups = result.rows;
-    console.log(billingGroups);
+
     res.render("index.ejs",
         {
             billingGroups: billingGroups
@@ -172,6 +173,10 @@ app.get("/balance/:id", async (req, res) => {
             billingGroupId: billingGroupId,
             userCost: costForUser
         });
+});
+
+app.get("/users", (req, res) => {
+    res.render("users.ejs");
 });
 
 app.listen(port, () => {

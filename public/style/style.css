@@ -10,6 +10,7 @@ body {
 }
 
 .app-container {
+    position: relative;
     height: 650px;
     width: 750px;
     margin-top: 50px;
@@ -105,4 +106,18 @@ a {
 #balance-not-as-link {
     width: 50%;
     text-align: center;
+}
+
+#choose-user-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 999;
+}
+
+#add-new-billing-group {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 999;
 }
