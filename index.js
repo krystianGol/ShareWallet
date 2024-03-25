@@ -185,7 +185,16 @@ app.get("/users", (req, res) => {
 app.post("/users", (req, res) => {
     currentUserId = req.body.userId;
     res.redirect("/");
-})
+});
+
+app.get("/new/:option", (req, res) => {
+    const option = req.params.option;
+    if (option == "billingGroup") {
+        res.render("newBillingGroup.ejs");
+    } else {
+        res.render("newUser.ejs");
+    }
+});
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

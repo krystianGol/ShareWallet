@@ -126,6 +126,9 @@ a {
     position: relative;
     width: 80%;
     height: 400px;
+    margin-top: 100px;
+    border-radius: 14px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     background-color: #28263b;
     overflow-x: auto;
 }
@@ -155,4 +158,3 @@ a {
     top: -30px;
     left: -30px;
 }
-
