@@ -182,6 +182,11 @@ app.get("/users", (req, res) => {
         });
 });
 
+app.post("/users", (req, res) => {
+    currentUserId = req.body.userId;
+    res.redirect("/");
+})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 })

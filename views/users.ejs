@@ -13,7 +13,8 @@
         <ul id="users-list">
             <% if (locals.users) { %>
                 <% users.forEach(user=> { %>
-                    <li id="user-list-item" style="background-color: aquamarine; border-radius: 14px;">
+                    <li id="user-list-item" style="background-color: aquamarine; border-radius: 14px;"
+                        data-user-id="<%= user.id %>" onclick="submitForm('<%= user.id %>')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor"
                             class="bi bi-person-circle" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -38,6 +39,16 @@
                                 </li>
         </ul>
     </div>
+    <form id="userForm" action="/users" method="POST">
+        <input type="hidden" id="userIdInput" name="userId" value="">
+    </form>
+
+    <script>
+        function submitForm(userId) {
+            document.getElementById('userIdInput').value = userId;
+            document.getElementById('userForm').submit();
+        }
+    </script>
 </body>
 
 </html>
