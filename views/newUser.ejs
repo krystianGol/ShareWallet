@@ -4,11 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <title>ShareWallet</title>
 </head>
 
 <body>
-    <h2>NEW USER</h2>
+    <div class="new-user-container">
+        <div class="header-container">
+            <h2 id="app-name-header">New User</h2>
+        </div>
+        <form id="user-name-and-billing-groups-id-form" action="/new/newUser" method="POST">
+            <input id="new-user-name" type="text" name="name" placeholder="Enter name" required>
+            <input type="hidden" id="billingGroupIdsInput" name="billingGroupIds">
+        </form>
+        <h3>Add to existing billing group</h3>
+        <form id="billingGroupForm">
+            <select id="existingBillingGroupsSelect" class="existing-billing-groups-select" multiple>
+                <% if (locals.billingGroups) { %>
+                    <% billingGroups.forEach(billingGroup=> { %>
+                        <option value="<%=billingGroup.id%>" billing-group-id="<%= billingGroup.id %>">
+                            <%= billingGroup.title %>
+                        </option>
+                        <% }); %>
+                            <% } else { %>
+                                <p>No data</p>
+                                <% } %>
+            </select>
+        </form>
+        <button id="submit-new-user-btn" onclick="submitForm()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+            </svg>
+        </button>
+    </div>
+
+    <script>
+
+        function submitForm() {
+            var selectedOptions = document.getElementById('existingBillingGroupsSelect').selectedOptions;
+            var selectedIds = [];
+
+            for (var i = 0; i < selectedOptions.length; i++) {
+                selectedIds.push(selectedOptions[i].value);
+            }
+
+            document.getElementById('billingGroupIdsInput').value = JSON.stringify(selectedIds);
+
+            document.getElementById('user-name-and-billing-groups-id-form').submit();
+        }
+
+    </script>
 </body>
 
 </html>

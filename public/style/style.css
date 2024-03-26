@@ -158,3 +158,32 @@ a {
     top: -30px;
     left: -30px;
 }
+
+.new-user-container {
+    position: relative;
+    height: 650px;
+    width: 750px;
+    margin-top: 50px;
+    background-color: #28263b;
+    border-radius: 14px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#new-user-name {
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+    width: 90%;
+}
+
+#submit-new-user-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px;
+    left: 45%;
+    z-index: 999;
+}

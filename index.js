@@ -64,6 +64,7 @@ function calculateCosts(users) {
             }
         }
         users[i].costs -= totalCostOfOthers;
+        users[i].costs = (users[i].costs).toFixed(2);
     }
     return users;
 }
@@ -187,12 +188,43 @@ app.post("/users", (req, res) => {
     res.redirect("/");
 });
 
-app.get("/new/:option", (req, res) => {
+app.get("/new/:option", async (req, res) => {
     const option = req.params.option;
     if (option == "billingGroup") {
         res.render("newBillingGroup.ejs");
     } else {
-        res.render("newUser.ejs");
+        const result = await db.query("SELECT * from billing_group;");
+        const billingGroups = result.rows;
+
+        res.render("newUser.ejs",
+            {
+                billingGroups: billingGroups
+            });
+    }
+});
+
+app.post("/new/:option", async (req, res) => {
+    const option = req.params.option;
+    if (option == "billingGroup") {
+        res.render("newBillingGroup.ejs");
+    } else {
+        const billingGroupIds = JSON.parse(req.body.billingGroupIds);
+        const newUserName = req.body.name;
+
+        // ADD NEW USER
+        const result = await db.query("INSERT INTO users (name) VALUES ($1) RETURNING *;", [newUserName]);
+
+        // GET NEW USER ID
+        const newUserId = result.rows[0].id;
+
+        if (typeof billingGroupIds != 'undefined') {
+            for (let i = 0; i < billingGroupIds.length; i++) {
+                // ADD NEW USER TO EXISTING BILLING GROUP
+                await db.query("INSERT INTO users_billing_group (user_id, billing_group_id) VALUES ($1, $2);", [newUserId, parseInt(billingGroupIds[i])]);
+            }
+        }
+        currentUserId = newUserId;
+        res.redirect("/");
     }
 });
 
