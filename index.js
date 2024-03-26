@@ -84,12 +84,12 @@ function calculateExpensesForEachUser(items, users) {
     items.forEach(item => {
         let user = users.find(user => user.name == item.name);
         if (user) {
-            user.costs += item.price;
+            user.costs += item.price / 3;
         }
     });
     return users;
 }
-// TODO: FIX CALCULATING BALANCE
+// TODO: CHECK FIX CALCULATING BALANCE
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
 
