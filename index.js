@@ -31,7 +31,7 @@ db.query("SELECT * FROM users", (err, res) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// CRATE STRING WITH ALL NAMES SEPARATED WITH ','
+// CREATE STRING WITH ALL NAMES SEPARATED WITH ','
 function namedAllUsers(users) {
     let allUsers = "";
     users.forEach(user => {
@@ -89,12 +89,11 @@ function calculateExpensesForEachUser(items, users) {
     });
     return users;
 }
-
+// TODO: FIX CALCULATING BALANCE
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
 
     const billingGroups = result.rows;
-
     res.render("index.ejs",
         {
             billingGroups: billingGroups
@@ -213,6 +212,7 @@ app.post("/new/:option", async (req, res) => {
 
         // ADD NEW USER
         const result = await db.query("INSERT INTO users (name) VALUES ($1) RETURNING *;", [newUserName]);
+        users.push(result.rows[0]);
 
         // GET NEW USER ID
         const newUserId = result.rows[0].id;
