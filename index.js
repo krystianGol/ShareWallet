@@ -60,7 +60,9 @@ function calculateCosts(users) {
         let totalCostOfOthers = 0;
         for (let j = 0; j < users.length; j++) {
             if (i !== j) {
-                totalCostOfOthers += usersClone[j].costs;
+                if (usersClone[j].costs > 0) {
+                    totalCostOfOthers += usersClone[j].costs / (users.length - 1);
+                }
             }
         }
         users[i].costs -= totalCostOfOthers;
@@ -69,7 +71,7 @@ function calculateCosts(users) {
     return users;
 }
 
-// CALCULATE COST ALL USERS 
+// CALCULATE PRICE FOR ALL BOUGHT ITEMS
 function calculateAllCosts(items) {
     let allCosts = 0;
     items.forEach(item => {
@@ -84,12 +86,11 @@ function calculateExpensesForEachUser(items, users) {
     items.forEach(item => {
         let user = users.find(user => user.name == item.name);
         if (user) {
-            user.costs += item.price / 3;
+            user.costs += item.price - (item.price / users.length); 
         }
     });
     return users;
 }
-// TODO: CHECK FIX CALCULATING BALANCE
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
 
