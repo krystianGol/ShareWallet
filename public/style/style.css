@@ -37,8 +37,10 @@ body {
     margin: 0px;
 }
 
-.billng-groups-container {
-    margin-top: 0;
+.expenses-container {
+    position: relative;
+    height: 450px;
+    width: auto;
     overflow-y: auto;
 }
 
@@ -55,7 +57,7 @@ li {
 }
 
 #line-under-list-item {
-    width: 100%;
+    width: 99%;
     border: 1px solid #7d7576;
 }
 
@@ -186,4 +188,24 @@ a {
     bottom: 10px;
     left: 45%;
     z-index: 999;
+}
+
+.bottom-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+}
+
+.text-left,
+.text-right {
+    flex: 1;
+    text-align: center;
 }

@@ -1,3 +1,8 @@
+//TODO: ZMIENIC WYSZUKIWANIE UZYTKOWNIKOW PO ID W FUNCKJI calculateExpensesForEachUser() 
+// CZYLI (ZMIANA ZAPYANIA DO SQL)
+// DODAC FUNKCJONALNOSC DODAWANIA ITEMOW 
+// WYPISYWAC ILE JESTEM WINIEN ORAZ CALKOWITY KOSZT
+
 import express from "express"
 import bodyParser from "body-parser";
 import pg from "pg";
@@ -46,6 +51,7 @@ function initializeCostForEveryUser(users) {
     let costForUser = [];
     users.forEach(user => {
         costForUser.push({
+            id: user.id,
             name: user.name,
             costs: 0
         })
@@ -86,7 +92,7 @@ function calculateExpensesForEachUser(items, users) {
     items.forEach(item => {
         let user = users.find(user => user.name == item.name);
         if (user) {
-            user.costs += item.price - (item.price / users.length); 
+            user.costs += item.price - (item.price / users.length);
         }
     });
     return users;
@@ -104,6 +110,8 @@ app.get("/", async (req, res) => {
 app.get("/expenses/:id", async (req, res) => {
     const billingGroupId = req.params.id;
     let allUsersString;
+    let allCosts;
+    let costForUser = [];
 
     // GET DATA ABOUT ITEMS FROM DATABASE
     const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
@@ -112,15 +120,34 @@ app.get("/expenses/:id", async (req, res) => {
     const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
     const itemsData = itemsResult.rows;
-
     const usersData = usersResult.rows;
+
     const title = usersData[0].title;
 
     if (usersData.length > 0) {
         const users = usersData;
         allUsersString = namedAllUsers(users);
+        costForUser = initializeCostForEveryUser(users);
     }
 
+    if (itemsData.length > 0) {
+
+        allCosts = calculateAllCosts(itemsData)
+
+        // CALCULATES COSTS WITHOUT INCLUDING THE COSTS OF OTHER USERS
+        costForUser = calculateExpensesForEachUser(itemsData, costForUser);
+
+        // INCLUDE COSTS OF OTHER USERS
+        costForUser = calculateCosts(costForUser);
+    }
+
+    // ZMIENIC
+    const findCurrentUser = costForUser.find(user => user.id == currentUserId);
+    console.log(findCurrentUser);
+    //const currentUserExpenses = findCurrentUser.costs;
+    //console.log("MY EXPENSES", currentUserExpenses);
+    //
+    
     res.render("expenses.ejs",
         {
             title: title,

@@ -39,30 +39,43 @@
                     </div>
                 </a>
             </div>
-            <ul id="billing-groups-list">
-                <% if (locals.items) { %>
-                    <% items.forEach(item=> { %>
-                        <li>
-                            <a href="/item/<%=item.id%>">
-                                <div class="iteam-header-price-container">
-                                    <h3 id="item-description">
-                                        <%=item.description%>
-                                    </h3>
-                                    <h3 id="item-price">
-                                        <%=item.price%> zł
-                                    </h3>
-                                </div>
-                                <p>
-                                    Paid by <%=item.name%>
-                                </p>
-                            </a>
-                        </li>
-                        <hr id="line-under-list-item" />
-                        <% }); %>
-                            <% } else { %>
-                                <p>There is no items</p>
-                                <% } %>
-            </ul>
+            <div class="expenses-container">
+                <ul id="billing-groups-list">
+                    <% if (locals.items) { %>
+                        <% items.forEach(item=> { %>
+                            <li>
+                                <a href="/item/<%=item.id%>">
+                                    <div class="iteam-header-price-container">
+                                        <h3 id="item-description">
+                                            <%=item.description%>
+                                        </h3>
+                                        <h3 id="item-price">
+                                            <%=item.price%> zł
+                                        </h3>
+                                    </div>
+                                    <p>
+                                        Paid by <%=item.name%>
+                                    </p>
+                                </a>
+                            </li>
+                            <hr id="line-under-list-item" />
+                            <% }); %>
+                                <% } else { %>
+                                    <p>There is no items</p>
+                                    <% } %>
+                </ul>
+                <div class="bottom-menu">
+                    <div class="text-left">My expenses:</div>
+                    <div class="button-container">
+                        <button><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                            </svg></button>
+                    </div>
+                    <div class="text-right">Total expenses: </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
