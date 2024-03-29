@@ -231,11 +231,12 @@ app.get("/new/:option", async (req, res) => {
     } else {
         const findCurrentUser = users.find(user => user.id == currentUserId);
         const currentUserName = findCurrentUser.name;
-        console.log(currentUserName);
-        res.render("newItem.ejs",
+
+        res.render("item.ejs",
             {
                 title: "New Item",
-                currentUserName: currentUserName
+                currentUserName: currentUserName,
+                option: "new"
             });
     }
 });
@@ -264,14 +265,42 @@ app.post("/new/:option", async (req, res) => {
         }
         currentUserId = newUserId;
         res.redirect("/");
-    } else {
+    } else if (option == 'newItem') {
         const newItemTitle = req.body.title;
         const newItemPrice = req.body.price;
-        console.log(currentBillingGroupId);
+
         await db.query("INSERT INTO items (description, price, user_id, billing_group_id) VALUES($1, $2, $3, $4);", [newItemTitle, newItemPrice, currentUserId, currentBillingGroupId]);
 
         res.redirect(`/`);
+    } else {
+        const newItemTitle = req.body.title;
+        const newItemPrice = req.body.price;
+        const currentItemId = req.body.itemId;
+
+        await db.query("UPDATE items SET description=$1, price=$2 WHERE id=$3;", [newItemTitle, newItemPrice, currentItemId]);
+
+        res.redirect("/");
     }
+});
+
+app.get("/item/:itemId/:itemDescription/:itemPrice/:paidBy", (req, res) => {
+    const itemToEditId = req.params.itemId;
+    const itemDescription = req.params.itemDescription;
+    const itemPrice = req.params.itemPrice;
+    const paidBy = req.params.paidBy;
+
+    const findCurrentUser = users.find(user => user.id == currentUserId);
+    const currentUserName = findCurrentUser.name;
+
+    res.render("item.ejs", {
+        title: "Edit Item",
+        currentUserName: currentUserName,
+        option: "edit",
+        paidBy: paidBy,
+        itemDescription: itemDescription,
+        itemPrice: itemPrice,
+        itemToEditId: itemToEditId
+    });
 });
 
 app.listen(port, () => {

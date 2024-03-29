@@ -219,6 +219,7 @@ a {
     align-items: center;
 }
 
+
 #add-new-item-btn {
     position: absolute;
     left: calc(50% - 30px);

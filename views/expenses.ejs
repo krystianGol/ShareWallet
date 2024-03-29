@@ -44,7 +44,7 @@
                     <% if (locals.items) { %>
                         <% items.forEach(item=> { %>
                             <li>
-                                <a href="/item/<%=item.id%>">
+                                <a href="/item/<%=item.id%>/<%=item.description%>/<%=item.price%>/<%=item.name%>">
                                     <div class="iteam-header-price-container">
                                         <h3 id="item-description">
                                             <%=item.description%>
