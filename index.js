@@ -1,8 +1,3 @@
-//TODO: ZMIENIC WYSZUKIWANIE UZYTKOWNIKOW PO ID W FUNCKJI calculateExpensesForEachUser() 
-// CZYLI (ZMIANA ZAPYANIA DO SQL)
-// DODAC FUNKCJONALNOSC DODAWANIA ITEMOW 
-// WYPISYWAC ILE JESTEM WINIEN ORAZ CALKOWITY KOSZT
-
 import express from "express"
 import bodyParser from "body-parser";
 import pg from "pg";
@@ -136,27 +131,27 @@ app.get("/expenses/:id", async (req, res) => {
     if (itemsData.length > 0) {
 
         allCosts = calculateAllCosts(itemsData)
-
-        // CALCULATES COSTS WITHOUT INCLUDING THE COSTS OF OTHER USERS
         costForUser = calculateExpensesForEachUser(itemsData, costForUser);
-
-        // INCLUDE COSTS OF OTHER USERS
         costForUser = calculateCosts(costForUser);
     }
 
-
     const findCurrentUser = costForUser.find(user => user.id == currentUserId);
-    console.log(findCurrentUser);
-    const currentUserExpenses = findCurrentUser.costs;
-    console.log("MY EXPENSES", currentUserExpenses);
-    console.log('TOTAL COSTS:', allCosts);
+    if (typeof allCosts == 'undefined') {
+        allCosts = 0;
+    }
+    let currentUserCost = findCurrentUser.costs;
+    if (currentUserCost > 0) {
+        currentUserCost = 0;
+    }
 
     res.render("expenses.ejs",
         {
             title: title,
             users: allUsersString,
             items: itemsData,
-            billingGroupId: billingGroupId
+            billingGroupId: billingGroupId,
+            currentUserCost: currentUserCost,
+            totalExpenses: allCosts
         });
 });
 
