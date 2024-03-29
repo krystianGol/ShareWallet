@@ -90,7 +90,7 @@ function calculateAllCosts(items) {
 // CALCULATES COSTS WITHOUT INCLUDING THE COSTS OF OTHER USERS
 function calculateExpensesForEachUser(items, users) {
     items.forEach(item => {
-        let user = users.find(user => user.name == item.name);
+        let user = users.find(user => user.id == item.user_id);
         if (user) {
             user.costs += item.price - (item.price / users.length);
         }
@@ -114,13 +114,15 @@ app.get("/expenses/:id", async (req, res) => {
     let costForUser = [];
 
     // GET DATA ABOUT ITEMS FROM DATABASE
-    const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
+    const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title, users.id AS user_id FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
 
     // GET DATA ABOUT USERS FROM DATABASE
-    const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
+    const usersResult = await db.query("SELECT users.id, users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
     const itemsData = itemsResult.rows;
     const usersData = usersResult.rows;
+
+    console.log(itemsData);
 
     const title = usersData[0].title;
 
@@ -128,6 +130,7 @@ app.get("/expenses/:id", async (req, res) => {
         const users = usersData;
         allUsersString = namedAllUsers(users);
         costForUser = initializeCostForEveryUser(users);
+        console.log(costForUser);
     }
 
     if (itemsData.length > 0) {
@@ -141,13 +144,13 @@ app.get("/expenses/:id", async (req, res) => {
         costForUser = calculateCosts(costForUser);
     }
 
-    // ZMIENIC
+
     const findCurrentUser = costForUser.find(user => user.id == currentUserId);
     console.log(findCurrentUser);
-    //const currentUserExpenses = findCurrentUser.costs;
-    //console.log("MY EXPENSES", currentUserExpenses);
-    //
-    
+    const currentUserExpenses = findCurrentUser.costs;
+    console.log("MY EXPENSES", currentUserExpenses);
+    console.log('TOTAL COSTS:', allCosts);
+
     res.render("expenses.ejs",
         {
             title: title,
@@ -164,10 +167,10 @@ app.get("/balance/:id", async (req, res) => {
     let allUsersString;
 
     // GET DATA ABOUT USERS FROM DATABASE
-    const usersResult = await db.query("SELECT users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
+    const usersResult = await db.query("SELECT users.id, users.name, billing_group.title FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE billing_group_id = $1;", [billingGroupId]);
 
     // GET DATA ABOUT ITEMS FROM DATABASE
-    const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
+    const itemsResult = await db.query("SELECT items.id, items.description, items.price, users.name, billing_group.title, users.id AS user_id FROM items JOIN users ON users.id = items.user_id JOIN billing_group ON billing_group.id = items.billing_group_id WHERE billing_group_id = $1 ORDER BY items.id;", [billingGroupId]);
 
     const itemsData = itemsResult.rows;
     const usersData = usersResult.rows;
