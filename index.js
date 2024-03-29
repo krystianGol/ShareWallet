@@ -92,6 +92,10 @@ function calculateExpensesForEachUser(items, users) {
     });
     return users;
 }
+
+// TODO: ADD NEW ITEM
+// EDIT ITEM IF YOU ADDED IT
+
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
 
@@ -117,7 +121,6 @@ app.get("/expenses/:id", async (req, res) => {
     const itemsData = itemsResult.rows;
     const usersData = usersResult.rows;
 
-    console.log(itemsData);
 
     const title = usersData[0].title;
 
@@ -125,7 +128,6 @@ app.get("/expenses/:id", async (req, res) => {
         const users = usersData;
         allUsersString = namedAllUsers(users);
         costForUser = initializeCostForEveryUser(users);
-        console.log(costForUser);
     }
 
     if (itemsData.length > 0) {
@@ -217,7 +219,7 @@ app.get("/new/:option", async (req, res) => {
     const option = req.params.option;
     if (option == "billingGroup") {
         res.render("newBillingGroup.ejs");
-    } else {
+    } else if (option == "user") {
         const result = await db.query("SELECT * from billing_group;");
         const billingGroups = result.rows;
 
@@ -225,6 +227,8 @@ app.get("/new/:option", async (req, res) => {
             {
                 billingGroups: billingGroups
             });
+    } else {
+        res.render("newItem.ejs");
     }
 });
 
