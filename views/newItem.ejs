@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css" />
+    <title>ShareWallet</title>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="header-container">
+            <h2 id="app-name-header">
+                <%= title %>
+            </h2>
+        </div>
+        <div class="new-item-container">
+            <form id="new-item-form" action="/new/item" method="POST">
+                <input id="new-item-title" type="text" name="title" placeholder="Title" required>
+                <input id="new-item-price" type="number" step="0.01" name="price" placeholder="Price" required>
+                <h3>Paid by</h3>
+                <p>
+                    <%=currentUserName%>
+                </p>
+                <button id="add-item-btn" type="submit">ADD NEW ITEM</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

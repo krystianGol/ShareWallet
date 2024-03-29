@@ -7,6 +7,7 @@ const port = 3000;
 
 let users = [];
 let currentUserId = 1;
+let currentBillingGroupId = 0;
 
 const db = new pg.Client({
     user: "postgres",
@@ -93,7 +94,6 @@ function calculateExpensesForEachUser(items, users) {
     return users;
 }
 
-// TODO: ADD NEW ITEM
 // EDIT ITEM IF YOU ADDED IT
 
 app.get("/", async (req, res) => {
@@ -108,6 +108,7 @@ app.get("/", async (req, res) => {
 
 app.get("/expenses/:id", async (req, res) => {
     const billingGroupId = req.params.id;
+    currentBillingGroupId = billingGroupId;
     let allUsersString;
     let allCosts;
     let costForUser = [];
@@ -228,7 +229,14 @@ app.get("/new/:option", async (req, res) => {
                 billingGroups: billingGroups
             });
     } else {
-        res.render("newItem.ejs");
+        const findCurrentUser = users.find(user => user.id == currentUserId);
+        const currentUserName = findCurrentUser.name;
+        console.log(currentUserName);
+        res.render("newItem.ejs",
+            {
+                title: "New Item",
+                currentUserName: currentUserName
+            });
     }
 });
 
@@ -236,7 +244,8 @@ app.post("/new/:option", async (req, res) => {
     const option = req.params.option;
     if (option == "billingGroup") {
         res.render("newBillingGroup.ejs");
-    } else {
+
+    } else if (option == "user") {
         const billingGroupIds = JSON.parse(req.body.billingGroupIds);
         const newUserName = req.body.name;
 
@@ -255,6 +264,13 @@ app.post("/new/:option", async (req, res) => {
         }
         currentUserId = newUserId;
         res.redirect("/");
+    } else {
+        const newItemTitle = req.body.title;
+        const newItemPrice = req.body.price;
+        console.log(currentBillingGroupId);
+        await db.query("INSERT INTO items (description, price, user_id, billing_group_id) VALUES($1, $2, $3, $4);", [newItemTitle, newItemPrice, currentUserId, currentBillingGroupId]);
+
+        res.redirect(`/`);
     }
 });
 
