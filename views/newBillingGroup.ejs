@@ -9,7 +9,90 @@
 </head>
 
 <body>
-    
+    <div class="new-user-container">
+        <div class="header-container">
+            <h2 id="app-name-header">New ShareWallet</h2>
+        </div>
+        <div class="new-billing-group-title-and-descirption-container">
+            <form id="new-billing-group-title-and-description-form" action="/new/billingGroup" method="POST">
+                <input type="text" name="title" placeholder="Title" required>
+                <input type="text" name="description" placeholder="Description" required>
+                <input type="hidden" id="selected-users-to-new-billing-group" name="usersToNewBillingGroup">
+                <input type="hidden" id="selected-category" name="categoryToNewBillingGroup">
+            </form>
+        </div>
+        <form id="new-user-billing-group-form" action="/new/billingGroup" method="POST">
+            <p>New username</p>
+            <input id="new-user-name-input" type="text" name="name" placeholder="Username" required>
+            <button type="button" onclick="addUser()">add</button>
+        </form>
+        <div class="new-bliing-group-category">
+            <select id="category">
+                <option value="trip">
+                    Trip
+                </option>
+                <option value="CommonHome">
+                    Common home
+                </option>
+                <option value="Relationship">
+                    Relationship
+                </option>
+                <option value="Party">
+                    Party
+                </option>
+                <option value="Project">
+                    Project
+                </option>
+                <option value="Other">
+                    Other
+                </option>
+            </select>
+        </div>
+        <h3>Select existing new user</h3>
+        <div class="new-bliing-group-category">
+            <select id="existing-users" multiple>
+                <% if(locals.users) { %>
+                    <% users.forEach(user=> { %>
+                        <option value="<%= user.id %>">
+                            <%= user.name %>
+                        </option>
+                        <% }) %>
+                            <% } %>
+            </select>
+        </div>
+        <button onclick="submitForm()">SUBMIT</button>
+    </div>
+
+    <script>
+        var newUsers = [];
+
+        function addUser() {
+            var userInput = document.getElementById("new-user-name-input").value;
+            var selectExistingUser = document.getElementById("existing-users");
+            var option = document.createElement("option");
+            option.text = userInput;
+            option.value = "new";
+            selectExistingUser.add(option);
+        }
+
+        function submitForm() {
+            var selectedUsers = document.getElementById("existing-users").selectedOptions;
+            var selectedCategory = document.getElementById("category");
+            var category = selectedCategory.value;
+            document.getElementById("selected-category").value = category;
+
+            var usersToNewBillingGroup = [];
+            for (let i = 0; i < selectedUsers.length; i++) {
+                var user = {
+                    id: selectedUsers[i].value,
+                    name: selectedUsers[i].text
+                };
+                usersToNewBillingGroup.push(user);
+            }
+            document.getElementById("selected-users-to-new-billing-group").value = JSON.stringify(usersToNewBillingGroup);
+            document.getElementById("new-billing-group-title-and-description-form").submit();
+        }
+    </script>
 </body>
-    <% // Two options add existing user or new user %>
+
 </html>

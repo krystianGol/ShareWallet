@@ -94,7 +94,8 @@ function calculateExpensesForEachUser(items, users) {
     return users;
 }
 
-// EDIT ITEM IF YOU ADDED IT
+
+// TODO: FUNCIONALITY TO ADD NEW BILLING GROUP
 
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM users_billing_group JOIN users ON users.id = users_billing_group.user_id JOIN billing_group ON billing_group.id = users_billing_group.billing_group_id WHERE users.id = $1;", [currentUserId]);
@@ -219,7 +220,12 @@ app.post("/users", (req, res) => {
 app.get("/new/:option", async (req, res) => {
     const option = req.params.option;
     if (option == "billingGroup") {
-        res.render("newBillingGroup.ejs");
+        const result = await db.query("SELECT * FROM users;");
+        const users = result.rows;
+        res.render("newBillingGroup.ejs",
+            {
+                users: users
+            });
     } else if (option == "user") {
         const result = await db.query("SELECT * from billing_group;");
         const billingGroups = result.rows;
@@ -244,8 +250,40 @@ app.get("/new/:option", async (req, res) => {
 app.post("/new/:option", async (req, res) => {
     const option = req.params.option;
     if (option == "billingGroup") {
-        res.render("newBillingGroup.ejs");
+        const usersToNewBillingGroup = JSON.parse(req.body.usersToNewBillingGroup);
+        const title = req.body.title;
+        const description = req.body.description;
+        const category = req.body.categoryToNewBillingGroup;
+        let usersToAdd = [];
+        let newUsers = [];
+        let usersId = [];
 
+        usersToNewBillingGroup.forEach(user => {
+            if (user.id == "new") {
+                usersToAdd.push(user.name);
+                users.push(user.name);
+            } else {
+                usersId.push(parseInt(user.id));
+            }
+        });
+
+        for (let i = 0; i < usersToAdd.length; i++) {
+            var result = await db.query("INSERT INTO users (name) VALUES ($1) RETURNING *;", [usersToAdd[i]]);
+            newUsers.push(result.rows[0])
+        }
+
+        for (let i = 0; i < newUsers.length; i++) {
+            usersId.push(newUsers[i].id);
+        }
+
+        const resu = await db.query("INSERT INTO billing_group (title, description, category) VALUES ($1, $2, $3) RETURNING *", [title, description, category]);
+        const newBillingGroup = resu.rows[0];
+
+        for (let i = 0; i < usersId.length; i++) {
+            await db.query("INSERT INTO users_billing_group (user_id, billing_group_id) VALUES ($1, $2);", [usersId[i], newBillingGroup.id]);
+        }
+
+        res.redirect("/");
     } else if (option == "user") {
         const billingGroupIds = JSON.parse(req.body.billingGroupIds);
         const newUserName = req.body.name;
