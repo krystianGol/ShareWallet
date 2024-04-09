@@ -261,7 +261,6 @@ app.post("/new/:option", async (req, res) => {
         usersToNewBillingGroup.forEach(user => {
             if (user.id == "new") {
                 usersToAdd.push(user.name);
-                users.push(user.name);
             } else {
                 usersId.push(parseInt(user.id));
             }
@@ -270,6 +269,8 @@ app.post("/new/:option", async (req, res) => {
         for (let i = 0; i < usersToAdd.length; i++) {
             var result = await db.query("INSERT INTO users (name) VALUES ($1) RETURNING *;", [usersToAdd[i]]);
             newUsers.push(result.rows[0])
+            console.log(result.rows);
+            users.push(result.rows[0]);
         }
 
         for (let i = 0; i < newUsers.length; i++) {
@@ -291,6 +292,7 @@ app.post("/new/:option", async (req, res) => {
         // ADD NEW USER
         const result = await db.query("INSERT INTO users (name) VALUES ($1) RETURNING *;", [newUserName]);
         users.push(result.rows[0]);
+        console.log(result.rows[0]);
 
         // GET NEW USER ID
         const newUserId = result.rows[0].id;
@@ -302,6 +304,7 @@ app.post("/new/:option", async (req, res) => {
             }
         }
         currentUserId = newUserId;
+        console.log(currentUserId);
         res.redirect("/");
     } else if (option == 'newItem') {
         const newItemTitle = req.body.title;

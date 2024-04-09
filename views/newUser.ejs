@@ -13,7 +13,7 @@
         <div class="header-container">
             <h2 id="app-name-header">New User</h2>
         </div>
-        <form id="user-name-and-billing-groups-id-form" action="/new/newUser" method="POST">
+        <form id="user-name-and-billing-groups-id-form" action="/new/user" method="POST">
             <input id="new-user-name" type="text" name="name" placeholder="Enter name" required>
             <input type="hidden" id="billingGroupIdsInput" name="billingGroupIds">
         </form>
@@ -53,8 +53,8 @@
 
             document.getElementById('user-name-and-billing-groups-id-form').submit();
         }
-
     </script>
+
 </body>
 
 </html>
