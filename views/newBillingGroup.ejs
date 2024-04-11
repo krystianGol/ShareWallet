@@ -5,28 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
     <title>ShareWallet</title>
 </head>
 
 <body>
-    <div class="new-user-container">
+    <div class="new-billing-group-container">
         <div class="header-container">
             <h2 id="app-name-header">New ShareWallet</h2>
         </div>
         <div class="new-billing-group-title-and-descirption-container">
             <form id="new-billing-group-title-and-description-form" action="/new/billingGroup" method="POST">
-                <input type="text" name="title" placeholder="Title" required>
-                <input type="text" name="description" placeholder="Description" required>
+                <input id="new-item-title" type="text" name="title" placeholder="Title" required>
+                <input id="new-item-price" type="text" name="description" placeholder="Description" required>
                 <input type="hidden" id="selected-users-to-new-billing-group" name="usersToNewBillingGroup">
                 <input type="hidden" id="selected-category" name="categoryToNewBillingGroup">
             </form>
         </div>
+        <p id="add-new-user-paragraph">Add New User</p>
         <form id="new-user-billing-group-form" action="/new/billingGroup" method="POST">
-            <p>New username</p>
-            <input id="new-user-name-input" type="text" name="name" placeholder="Username" required>
-            <button type="button" onclick="addUser()">add</button>
+            <input id="new-item-title" type="text" name="name" placeholder="Username" style="margin-top: 0;" required>
+            <button id="add-new-user-btn" type="button" onclick="addUser()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-plus"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg>
+            </button>
         </form>
         <div class="new-bliing-group-category">
+            <h3 id="choose-category-header">Choose category</h3>
             <select id="category">
                 <option value="trip">
                     Trip

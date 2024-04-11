@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
     <title>ShareWallet</title>
 </head>
 
@@ -39,17 +42,28 @@
                     <h3>BALANCE</h3>
                 </div>
             </div>
-            <ul id="balance-id">
+            <ul id="users-costs-list">
                 <% if (locals.userCost) { %>
                     <% userCost.forEach(user=> { %>
                         <li>
                             <p>
                                 <%=user.name%>
                             </p>
-                            <p>
-                                <%=user.costs%>
-                            </p>
+                            <% if(user.costs> 0) { %>
+                                <p style="color: #6ddb45">
+                                    <%=user.costs%>
+                                </p>
+                                <% } else if (user.costs < 0) { %>
+                                    <p style="color: #e21212">
+                                        <%=user.costs%>
+                                    </p>
+                                    <% } else { %>
+                                        <p>
+                                            <%=user.costs%>
+                                        </p>
+                                        <% } %>
                         </li>
+                        <hr id="line-under-list-item" />
                         <% }) %>
                             <% } else { %>
                                 <p>There is no expenses</p>

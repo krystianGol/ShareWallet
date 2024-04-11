@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
     <title>ShareWallet</title>
 </head>
 
@@ -19,10 +22,10 @@
                     <% billingGroups.forEach(billingGroup=> { %>
                         <li>
                             <a href="/expenses/<%=billingGroup.id%>">
-                                <h3>
+                                <h3 id="billing-group-title">
                                     <%= billingGroup.title %>
                                 </h3>
-                                <p>
+                                <p id="billing-group-description">
                                     <%= billingGroup.description %>
                                 </p>
                             </a>
@@ -34,8 +37,19 @@
                                 <% } %>
             </ul>
         </div>
-        <button id="choose-user-btn" onclick="window.location.href='/users'">USER</button>
-        <button id="add-new-billing-group" onclick="window.location.href='/new/billingGroup'">Billing group</button>
+        <button id="choose-user-btn" onclick="window.location.href='/users'"><svg xmlns="http://www.w3.org/2000/svg"
+                width="30" height="30" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                <path
+                    d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                <path
+                    d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+            </svg></button>
+        <button id="add-new-billing-group" onclick="window.location.href='/new/billingGroup'"><svg
+                xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-wallet2"
+                viewBox="0 0 16 16">
+                <path
+                    d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
+            </svg></button>
     </div>
 </body>
 

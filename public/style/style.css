@@ -1,9 +1,10 @@
 html {
     height: 100%;
+    font-family: "Tilt Neon", sans-serif;
 }
 
 body {
-    background-color: #a59dde;
+    background-color: #f3f6f2;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -12,9 +13,9 @@ body {
 .app-container {
     position: relative;
     height: 650px;
-    width: 750px;
+    width: 550px;
     margin-top: 50px;
-    background-color: #28263b;
+    background-color: #9ab396;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -29,13 +30,22 @@ body {
     padding-bottom: 10px;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
-    background-color: #3d3b4c;
+    background-color: #63a55a;
 }
 
 #app-name-header {
-    color: aliceblue;
     font-size: 35px;
     margin: 0px;
+    color: black;
+}
+
+#billing-group-title {
+    margin-bottom: 0;
+}
+
+#billing-group-description {
+    color: #a09d9e;
+    font-size: 14px;
 }
 
 .expenses-container {
@@ -59,9 +69,14 @@ body {
 
 #billing-groups-list {
     list-style-type: none;
-    background-color: #4d494a;
+    background-color: white;
     color: aliceblue;
     padding: 0;
+    color: black;
+    border-radius: 14px;
+    padding-bottom: 1px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 li {
@@ -70,7 +85,7 @@ li {
 }
 
 #line-under-list-item {
-    width: 99%;
+    width: 95%;
     border: 1px solid #7d7576;
 }
 
@@ -89,8 +104,15 @@ a {
     order: 1;
 }
 
+#who-bought-item {
+    margin-top: 0;
+    font-size: 14px;
+    color: #a09d9e;
+}
+
 #item-price {
     order: 2;
+    margin-right: 20px;
 }
 
 .expenses-balance {
@@ -102,6 +124,8 @@ a {
 #expenses-not-as-link {
     width: 50%;
     text-align: center;
+    background-color: #f8f6f6;
+    border-bottom-right-radius: 14px;
 }
 
 #balance-as-link {
@@ -121,13 +145,32 @@ a {
 #balance-not-as-link {
     width: 50%;
     text-align: center;
+    border-bottom-left-radius: 14px;
+    background-color: #f8f6f6;
+}
+
+#users-costs-list {
+    list-style-type: none;
+    background-color: white;
+    color: aliceblue;
+    padding: 0;
+    color: black;
+    border-radius: 14px;
+    padding-bottom: 1px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 #choose-user-btn {
     position: absolute;
+    height: 70px;
+    width: 70px;
     bottom: 10px;
     left: 10px;
     z-index: 999;
+    border-radius: 50%;
+    border: none;
+    background-color: white;
 }
 
 #add-new-billing-group {
@@ -135,6 +178,11 @@ a {
     bottom: 10px;
     right: 10px;
     z-index: 999;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    border: none;
+    background-color: white;
 }
 
 .users-container {
@@ -174,12 +222,12 @@ a {
     left: -30px;
 }
 
-.new-user-container {
+.new-billing-group-container {
     position: relative;
     height: 650px;
     width: 750px;
     margin-top: 50px;
-    background-color: #28263b;
+    background-color: #9ab396;
     border-radius: 14px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
@@ -217,6 +265,7 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #63a55a;
 }
 
 
@@ -229,6 +278,7 @@ a {
     border-radius: 50%;
     border: none;
     z-index: 999;
+    background-color: #9ae77e;
 }
 
 .current-user-cost,
@@ -240,9 +290,72 @@ a {
 #new-item-title {
     width: 90%;
     padding: 5px;
+    padding-left: 10px;
+    border: none;
+    font-family: "Tilt Neon", sans-serif;
+    border-radius: 14px;
+    margin-top: 5px;
+    margin-left: 3px;
+    font-size: 16px;
+    margin-bottom: 2px;
 }
 
 #new-item-price {
     width: 90%;
     padding: 5px;
+    padding-left: 10px;
+    border: none;
+    font-family: "Tilt Neon", sans-serif;
+    border-radius: 14px;
+    margin-top: 5px;
+    margin-left: 3px;
+    font-size: 16px;
+}
+
+#who-buys-item {
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+
+#current-user {
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+#add-item-btn {
+    border-radius: 14px;
+    border: none;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background-color: #63a55a;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+#add-item-btn:hover {
+    background-color: #538a4c;
+}
+
+#add-new-user-paragraph {
+    margin-left: 5px;
+}
+
+#choose-category-header {
+    margin-left: 5px;
+}
+
+#add-new-user-btn {
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+#new-user-billing-group-form {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
 }
