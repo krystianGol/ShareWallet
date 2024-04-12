@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="new-user-container">
+    <div class="app-container">
         <div class="header-container">
             <h2 id="app-name-header">New User</h2>
         </div>
@@ -17,7 +17,7 @@
             <input id="new-user-name" type="text" name="name" placeholder="Enter name" required>
             <input type="hidden" id="billingGroupIdsInput" name="billingGroupIds">
         </form>
-        <h3>Add to existing billing group</h3>
+        <h3 id="add-to-existing-billing-group-header">Add to existing billing group</h3>
         <form id="billingGroupForm">
             <select id="existingBillingGroupsSelect" class="existing-billing-groups-select" multiple>
                 <% if (locals.billingGroups) { %>

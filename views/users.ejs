@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
     <title>ShareWallet</title>
 </head>
 
@@ -13,7 +16,8 @@
         <ul id="users-list">
             <% if (locals.users) { %>
                 <% users.forEach(user=> { %>
-                    <li id="user-list-item" style="background-color: aquamarine; border-radius: 14px;"
+                    <li id="user-list-item"
+                        style="background-color: #63a55a; border-radius: 14px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);"
                         data-user-id="<%= user.id %>" onclick="submitForm('<%= user.id %>')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor"
                             class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -30,7 +34,7 @@
                             <p>Error 404</p>
                             <% } %>
                                 <li id="user-list-item">
-                                    <button id="add-new-user-btn" onclick="window.location.href='/new/user'"><svg
+                                    <button id="add-user-btn" onclick="window.location.href='/new/user'"><svg
                                             xmlns="http://www.w3.org/2000/svg" width="40" height="40"
                                             fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"

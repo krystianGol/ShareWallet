@@ -192,12 +192,13 @@ a {
     margin-top: 100px;
     border-radius: 14px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background-color: #28263b;
+    background-color: #9ab396;
     overflow-x: auto;
 }
 
 #users-list {
-    list-style: none;
+    list-style-type: none;
+    display: inline-block;
 }
 
 #user-list-item {
@@ -212,15 +213,6 @@ a {
     padding-top: 10px;
 }
 
-#add-new-user-btn {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-top: 70px;
-    position: relative;
-    top: -30px;
-    left: -30px;
-}
 
 #add-new-user-in-new-billing-group-btn {
     width: 35px;
@@ -241,17 +233,24 @@ a {
 }
 
 #new-user-name {
-    padding: 10px;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    font-size: 20px;
     width: 90%;
+    padding-left: 13px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    font-family: "Tilt Neon", sans-serif;
+    border-radius: 14px;
+    margin-top: 5px;
+    margin-left: 3px;
+    font-size: 16px;
+    margin-bottom: 2px;
 }
 
 #submit-new-user-btn {
+    background-color: white;
     width: 70px;
     height: 70px;
+    border: none;
     border-radius: 50%;
     position: absolute;
     bottom: 10px;
@@ -354,6 +353,19 @@ a {
     margin-left: 5px;
 }
 
+#add-user-btn {
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-radius: 50%;
+    margin-top: 70px;
+    position: relative;
+    top: -30px;
+    left: -30px;
+    background-color: white;
+}
+
+
 #add-new-user-btn {
     border: none;
     border-radius: 50%;
@@ -403,11 +415,9 @@ a {
     border-bottom: none;
 }
 
-/* Style selected item */
 .choose-category-container .select-items div:hover,
 .choose-category-container .same-as-selected {
     background-color: #63a55a;
-    /* Blue color */
     color: white;
 }
 
@@ -434,23 +444,17 @@ a {
     color: #333;
     cursor: pointer;
     overflow-y: auto;
-    /* Enable vertical scrollbar */
 }
 
-/* Styling for the options */
 #existing-users option {
     padding: 5px;
 }
 
-/* Styling for the selected option */
 #existing-users option:checked {
     background-color: #63a55a;
-    /* Change background color of selected option */
     color: #fff;
-    /* Change text color of selected option */
 }
 
-/* Styling for the scrollbar */
 #existing-users::-webkit-scrollbar {
     width: 10px;
 }
@@ -475,4 +479,34 @@ a {
     margin-top: 15px;
     margin-bottom: 15px;
     font-weight: bold;
+}
+
+.existing-billing-groups-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    outline: none;
+    transition: border-color 0.3s ease;
+    overflow-y: auto;
+}
+
+/* Style selected options */
+.existing-billing-groups-select option:checked {
+    background-color: #63a55a;
+    color: #fff;
+}
+
+#existing-billing-groups-select::-webkit-scrollbar {
+    width: 10px;
+}
+
+#existing-billing-groups-select:-webkit-scrollbar-thumb {
+    background-color: #63a55a;
+}
+
+#add-to-existing-billing-group-header {
+    margin-left: 5px;
 }
