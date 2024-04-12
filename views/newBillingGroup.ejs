@@ -26,8 +26,9 @@
         </div>
         <p id="add-new-user-paragraph">Add New User</p>
         <form id="new-user-billing-group-form" action="/new/billingGroup" method="POST">
-            <input id="new-item-title" type="text" name="name" placeholder="Username" style="margin-top: 0;" required>
-            <button id="add-new-user-btn" type="button" onclick="addUser()">
+            <input id="new-username-input" type="text" name="name" placeholder="Username" style="margin-top: 0;"
+                required>
+            <button id="add-new-user-in-new-billing-group-btn" type="button" onclick="addUser()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-plus"
                     viewBox="0 0 16 16">
                     <path
@@ -36,29 +37,27 @@
             </button>
         </form>
         <div class="new-bliing-group-category">
-            <h3 id="choose-category-header">Choose category</h3>
-            <select id="category">
-                <option value="trip">
-                    Trip
-                </option>
-                <option value="CommonHome">
-                    Common home
-                </option>
-                <option value="Relationship">
-                    Relationship
-                </option>
-                <option value="Party">
-                    Party
-                </option>
-                <option value="Project">
-                    Project
-                </option>
-                <option value="Other">
-                    Other
-                </option>
-            </select>
+            <div class="choose-category-container">
+                <select id="category">
+                    <option value="trip">Trip</option>
+                    <option value="CommonHome">Common home</option>
+                    <option value="Relationship">Relationship</option>
+                    <option value="Party">Party</option>
+                    <option value="Project">Project</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div class="select-selected">Select a category</div>
+                <div class="select-items">
+                    <div>Trip</div>
+                    <div>Common home</div>
+                    <div>Relationship</div>
+                    <div>Party</div>
+                    <div>Project</div>
+                    <div>Other</div>
+                </div>
+            </div>
         </div>
-        <h3>Select existing new user</h3>
+        <h3>Select users</h3>
         <div class="new-bliing-group-category">
             <select id="existing-users" multiple>
                 <% if(locals.users) { %>
@@ -70,14 +69,43 @@
                             <% } %>
             </select>
         </div>
-        <button onclick="submitForm()">SUBMIT</button>
+        <button id="submit-new-billing-group" onclick="submitForm()">SUBMIT</button>
     </div>
 
     <script>
-        var newUsers = [];
+        var select = document.querySelector(".choose-category-container select");
+        var options = document.querySelectorAll(".choose-category-container .select-items div");
+        var selected = document.querySelector(".choose-category-container .select-selected");
+
+        selected.addEventListener("click", function () {
+            selected.classList.toggle("select-arrow-active");
+            document.querySelector(".choose-category-container .select-items").classList.toggle("select-hide");
+        });
+
+        for (var option of options) {
+            option.addEventListener("click", function () {
+                if (!this.classList.contains("same-as-selected")) {
+                    var value = this.innerText;
+                    selected.innerText = value;
+                    select.value = value;
+                }
+            });
+        }
+
+        document.addEventListener("click", function (e) {
+            if (!e.target.matches('.choose-category-container .select-selected')) {
+                var dropdowns = document.querySelectorAll(".choose-category-container .select-items");
+                for (var dropdown of dropdowns) {
+                    if (!dropdown.classList.contains('select-hide')) {
+                        dropdown.classList.add('select-hide');
+                    }
+                }
+                selected.classList.remove("select-arrow-active");
+            }
+        });
 
         function addUser() {
-            var userInput = document.getElementById("new-user-name-input").value;
+            var userInput = document.getElementById("new-username-input").value;
             var selectExistingUser = document.getElementById("existing-users");
             var option = document.createElement("option");
             option.text = userInput;
@@ -102,6 +130,7 @@
             document.getElementById("selected-users-to-new-billing-group").value = JSON.stringify(usersToNewBillingGroup);
             document.getElementById("new-billing-group-title-and-description-form").submit();
         }
+
     </script>
 </body>
 
