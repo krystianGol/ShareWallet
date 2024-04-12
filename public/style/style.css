@@ -234,7 +234,7 @@ a {
     position: relative;
     height: auto;
     width: 750px;
-    margin-top: 50px;
+    margin-top: 30px;
     background-color: #9ab396;
     border-radius: 14px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -463,7 +463,7 @@ a {
     border-color: #63a55a;
 }
 
-#submit-new-billing-group {
+#submit-new-billing-group-btn {
     border-radius: 14px;
     border: none;
     padding-left: 25px;
@@ -473,5 +473,6 @@ a {
     background-color: #63a55a;
     margin-left: 5px;
     margin-top: 15px;
+    margin-bottom: 15px;
     font-weight: bold;
 }
