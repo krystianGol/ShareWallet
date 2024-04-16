@@ -1,20 +1,27 @@
 import express from "express"
 import bodyParser from "body-parser";
 import pg from "pg";
+import dotenv from 'dotenv';
 
 const app = express();
 const port = 3000;
+dotenv.config();
+
+const USER = process.env.USER;
+const HOST = process.env.HOST;
+const DATABASE = process.env.DATABASE;
+const PORT = process.env.PORT;
 
 let users = [];
 let currentUserId = 1;
 let currentBillingGroupId = 0;
 
 const db = new pg.Client({
-    user: "postgres",
-    host: "localhost",
-    database: "ShareWallet",
-    password: "db1234",
-    port: 5432
+    user: USER,
+    host: HOST,
+    database: DATABASE,
+    password: PASSWORD,
+    port: PORT
 });
 
 // CONNECT TO DATABASE
@@ -231,13 +238,13 @@ app.get("/new/:option", async (req, res) => {
         const billingGroups = result.rows;
         if (billingGroups.length > 0) {
             res.render("newUser.ejs",
-            {
-                billingGroups: billingGroups
-            });
+                {
+                    billingGroups: billingGroups
+                });
         } else {
             res.render("newUser.ejs");
         }
-            
+
     } else {
         const findCurrentUser = users.find(user => user.id == currentUserId);
         const currentUserName = findCurrentUser.name;
