@@ -17,27 +17,33 @@
             <input id="new-user-name" type="text" name="name" placeholder="Enter name" required>
             <input type="hidden" id="billingGroupIdsInput" name="billingGroupIds">
         </form>
-        <h3 id="add-to-existing-billing-group-header">Add to existing billing group</h3>
-        <form id="billingGroupForm">
-            <select id="existingBillingGroupsSelect" class="existing-billing-groups-select" multiple>
-                <% if (locals.billingGroups) { %>
+        <% if (locals.billingGroups) { %>
+            <h3 id="add-to-existing-billing-group-header">Add to existing billing group</h3>
+            <form id="billingGroupForm">
+                <select id="existingBillingGroupsSelect" class="existing-billing-groups-select" multiple>
                     <% billingGroups.forEach(billingGroup=> { %>
                         <option value="<%=billingGroup.id%>" billing-group-id="<%= billingGroup.id %>">
                             <%= billingGroup.title %>
                         </option>
                         <% }); %>
-                            <% } else { %>
-                                <p>No data</p>
-                                <% } %>
-            </select>
-        </form>
-        <button id="submit-new-user-btn" onclick="submitForm()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-            </svg>
-        </button>
+                </select>
+            </form>
+            <button id="submit-new-user-btn" onclick="submitForm()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                </svg>
+            </button>
+            <% } else { %>
+                <button id="submit-new-user-btn" onclick="submitFormWithoutExistingBillingGroups()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+                <% } %>
     </div>
 
     <script>
@@ -51,6 +57,12 @@
 
             document.getElementById('billingGroupIdsInput').value = JSON.stringify(selectedIds);
 
+            document.getElementById('user-name-and-billing-groups-id-form').submit();
+        }
+
+        function submitFormWithoutExistingBillingGroups() {
+            var selectedIds = [];
+            document.getElementById('billingGroupIdsInput').value = JSON.stringify(selectedIds);
             document.getElementById('user-name-and-billing-groups-id-form').submit();
         }
     </script>

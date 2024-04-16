@@ -229,11 +229,15 @@ app.get("/new/:option", async (req, res) => {
     } else if (option == "user") {
         const result = await db.query("SELECT * from billing_group;");
         const billingGroups = result.rows;
-
-        res.render("newUser.ejs",
+        if (billingGroups.length > 0) {
+            res.render("newUser.ejs",
             {
                 billingGroups: billingGroups
             });
+        } else {
+            res.render("newUser.ejs");
+        }
+            
     } else {
         const findCurrentUser = users.find(user => user.id == currentUserId);
         const currentUserName = findCurrentUser.name;

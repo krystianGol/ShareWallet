@@ -4,7 +4,7 @@ html {
 }
 
 body {
-    background-color: #f3f6f2;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -330,6 +330,7 @@ a {
 }
 
 #add-item-btn {
+    width: calc(100% - 20px);
     border-radius: 14px;
     border: none;
     padding-left: 25px;
@@ -468,6 +469,7 @@ a {
 }
 
 #submit-new-billing-group-btn {
+    width: calc(100% - 20px);
     border-radius: 14px;
     border: none;
     padding-left: 25px;
