@@ -261,6 +261,9 @@ a {
 .bottom-menu {
     display: flex;
     padding: 5px;
+    padding-bottom: 13px;
+    padding-top: 10px;
+    font-size: 18px;
     width: calc(100% - 10px);
     height: 20px;
     background-color: #fff;
